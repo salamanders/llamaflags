@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.20"
+    application
 }
 
 group = "info.benjaminhill.llamaflags"
@@ -12,10 +13,8 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-
-    testImplementation(kotlin("test"))
 }
 
-tasks.test {
-    useJUnitPlatform()
+application {
+    mainClass.set("info.benjaminhill.llamaflags.LLMFlagsKt")
 }
