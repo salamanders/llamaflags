@@ -70,9 +70,7 @@ class CommandExecutor {
                                     println(line) // Print output in real-time.
                                     val wordsInLine = line?.split(Regex("\\s+"))?.count { it.isNotBlank() } ?: 0
                                     totalWords.addAndGet(wordsInLine.toLong())
-                                    Regex("llama_perf_context_print:.+(\\S+) tokens per second").find(line ?: "")?.groupValues?.first()?.let {
-                                        tps = it.toDouble()
-                                    }
+                                    tps = Regex("llama_perf_context_print:.+(\\S+) tokens per second").find(line ?: "")?.groupValues[1]?.toDouble() ?: 0.0
                                 }
                             }
                         }
