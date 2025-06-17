@@ -46,7 +46,7 @@ fun main() = runBlocking {
 
     println("🧪 Starting benchmark of ${combinations.size} parameter combinations...")
 
-    val allStats = combinations.take(1).map { params ->
+    val allStats = combinations.map { params ->
         val commandParts = buildCommand(BASE_COMMAND, params)
         val result = measureTimedValue {
             commandExecutor.execute(commandParts)
