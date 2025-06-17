@@ -62,15 +62,16 @@ class CommandExecutor {
 
                         // Coroutine #2: Reads the process output stream.
                         val readerJob = launch(Dispatchers.IO) {
-                            val reader = BufferedReader(InputStreamReader(process.inputStream))
-                            reader.use { r ->
+                            BufferedReader(InputStreamReader(process.inputStream)).use { r ->
                                 var line: String?
-                                // Read line by line until the stream is closed (process terminates).
                                 while (r.readLine().also { line = it } != null) {
                                     println(line) // Print output in real-time.
                                     val wordsInLine = line?.split(Regex("\\s+"))?.count { it.isNotBlank() } ?: 0
                                     totalWords.addAndGet(wordsInLine.toLong())
-                                    tps = Regex("llama_perf_context_print:.+(\\S+) tokens per second").find(line ?: "")?.groupValues[1]?.toDouble() ?: 0.0
+                                    Regex("""llama_perf_context_print:.+([0-9.]+) tokens per second""").find(line ?: "")
+                                        ?.let { matchRsult ->
+                                            tps = matchRsult.groupValues[1].toDouble()
+                                        }
                                 }
                             }
                         }
